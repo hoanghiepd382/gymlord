@@ -1,0 +1,32 @@
+const productRoutes = require("./product.route");
+const homeRoutes = require("./home.route");
+const productCategoryMiddleware = require("../../middlewares/client/product-category.middleware");
+const searchRoutes = require('./search.route');
+const cartRoutes = require("./cart.route");
+const cartMiddleware = require("../../middlewares/client/cart.middleware");
+const checkoutRoutes = require("./checkout.route");
+const userRoutes = require("./user.route");
+const userMiddleware = require("../../middlewares/client/user.middleware");
+const header = require("../../middlewares/client/search-header.middleware");
+const authMiddleware = require("../../middlewares/client/auth.middleware");
+const blogRoutes = require("./blog.route");
+const settingMiddleware = require("../../middlewares/client/setting.middleware");
+const aboutRoutes = require("./about.route");
+const loginLimiterMiddleware = require("../../middlewares/client/rateLimiter.middleware");
+
+module.exports = (app) => {
+    app.use(productCategoryMiddleware.productCategory);
+    app.use(cartMiddleware.cartId);
+    app.use(userMiddleware.user);
+    app.use(settingMiddleware.settingGeneral);
+
+    app.use("/", homeRoutes);
+    app.use("/product", header.searchForm, productRoutes);
+    app.use("/search", searchRoutes);
+    app.use("/cart", cartRoutes);
+    app.use("/checkout", checkoutRoutes);
+    app.use("/user", loginLimiterMiddleware.loginLimiter, userRoutes);
+    app.use("/blog", blogRoutes);
+    app.use("/about", aboutRoutes);
+
+}
