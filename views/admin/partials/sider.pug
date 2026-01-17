@@ -22,6 +22,9 @@
             if (role.permissions.includes("account_view"))
                 li
                     a(href=`${prefixAdmin}/account`) Danh sách tài khoản
+            if (role.permissions.includes("account_view"))
+                li
+                    a(href=`${prefixAdmin}/user`) Danh sách người dùng
             li
                 a(href=`${prefixAdmin}/blog`) Danh sách bài viết
             li

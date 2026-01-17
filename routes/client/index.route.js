@@ -8,15 +8,13 @@ const checkoutRoutes = require("./checkout.route");
 const userRoutes = require("./user.route");
 const userMiddleware = require("../../middlewares/client/user.middleware");
 const header = require("../../middlewares/client/search-header.middleware");
-const chatRoutes = require("./chat.route");
-const usersRoutes = require("./users.route");
-const roomsChatRoutes = require("./rooms-chat.route");
 const authMiddleware = require("../../middlewares/client/auth.middleware");
 const blogRoutes = require("./blog.route");
 const settingMiddleware = require("../../middlewares/client/setting.middleware");
 const aboutRoutes = require("./about.route");
+const loginLimiterMiddleware = require("../../middlewares/client/rateLimiter.middleware");
 
-module.exports = (app)=>{
+module.exports = (app) => {
     app.use(productCategoryMiddleware.productCategory);
     app.use(cartMiddleware.cartId);
     app.use(userMiddleware.user);
@@ -27,10 +25,7 @@ module.exports = (app)=>{
     app.use("/search", searchRoutes);
     app.use("/cart", cartRoutes);
     app.use("/checkout", checkoutRoutes);
-    app.use("/user", userRoutes);
-    app.use("/chat", authMiddleware.requireAuth, chatRoutes);
-    app.use("/users", authMiddleware.requireAuth, usersRoutes);
-    app.use("/rooms-chat", roomsChatRoutes);
+    app.use("/user", loginLimiterMiddleware.loginLimiter, userRoutes);
     app.use("/blog", blogRoutes);
     app.use("/about", aboutRoutes);
 

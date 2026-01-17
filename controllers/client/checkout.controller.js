@@ -18,7 +18,6 @@ module.exports.index = async (req, res) => {
     const user = await User.findOne({
         tokenUser: req.cookies.tokenUser 
     }).select("fullName phone address");
-    console.log(user);
     const cart = await Cart.findOne({
         _id: req.cookies.cartId
     });
@@ -85,8 +84,12 @@ module.exports.order = async (req, res) => {
     } else if (method === 'vnpay'){
         paymentVnpay.createPaymentUrl(req, res, {carts});
     }
-     else  {
+     else if (method === 'bank') {
         paymentBank.showbankTransfer(req, res);
+    }
+    else{
+        res.redirect("/checkout/success/");
+       
     }
     
 };
@@ -156,6 +159,7 @@ module.exports.success = async (req, res) =>{
         orderDetail: newOrder
     });
 }
+
 
 module.exports.failed = async (req, res)=>{
     res.render("client/pages/checkout/failed");

@@ -4,10 +4,12 @@ if (formCreateAccount){
     const uploadImageInput = uploadImage.querySelector("[upload-image-input]");
     const uploadPreview = uploadImage.querySelector("[upload-preview]");
     const container = uploadImage.querySelector('.image-preview-container');
-    console.log(uploadPreview);
 
     if (uploadPreview.src != window.location.href && uploadPreview.src != ""){
         container.style.display = "inline-block";
+    }
+    else{
+        container.style.display = "none";
     }
     uploadImageInput.addEventListener("change", (e)=>{
         const file = e.target.files[0];

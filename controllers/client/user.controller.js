@@ -9,7 +9,8 @@ const generateOTP = require("../../helpers/generate");
 const sendMailHelper = require("../../helpers/sendMail");
 const passport = require("passport");
 const newPriceProductHelper = require("../../helpers/newPriceProduct");
-
+const hashPasswordHelper = require("../../helpers/hashPassword");
+const generateTokenHelper = require("../../helpers/generateToken");
 
 
 module.exports.register = (req, res) =>{
@@ -27,10 +28,12 @@ module.exports.registerPost = async (req, res) =>{
         res.redirect("back");
         return;
     }
-    req.body.password = md5(req.body.password);
+    req.body.password = await hashPasswordHelper.hashPassword(req.body.password);
 
     const newUser = new User(req.body);
     newUser.save();
+
+    newUser.tokenUser = generateTokenHelper.generateToken(newUser);
 
     res.cookie("tokenUser", newUser.tokenUser);
     const cart = await Cart.findOne({
