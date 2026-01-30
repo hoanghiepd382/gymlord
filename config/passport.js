@@ -6,7 +6,7 @@ const User = require("../models/user.model");
 passport.use(new GoogleStrategy({
   clientID: process.env.ClientID,
   clientSecret: process.env.ClientSecret,
-  callbackURL: 'http://localhost:3000/user/login/google/callback',
+  callbackURL: 'https://hiepsadoi.io.vn/user/login/google/callback',
 }, async (accessToken, refreshToken, profile, done) => {
   try {
     let user = await User.findOne({ googleId: profile.id });
